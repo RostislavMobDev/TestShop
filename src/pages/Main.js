@@ -43,7 +43,7 @@ export default class Main extends Component {
   }
 
   guestAction = () => {
-    // Actions.main({ type: 'reset' });
+    Actions.products();
   }
 
   render() {

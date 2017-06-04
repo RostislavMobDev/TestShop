@@ -10,9 +10,8 @@ export const setProducts = data => ({
   data,
 });
 
-export const cleanProducts = data => ({
+export const cleanProducts = () => ({
   type: CLEAN_PRODUCTS,
-  data,
 });
 
 export const setSelectedProduct = data => ({
@@ -20,9 +19,8 @@ export const setSelectedProduct = data => ({
   data,
 });
 
-export const cleanSelectedProduct = data => ({
+export const cleanSelectedProduct = () => ({
   type: CLEAN_SELECTED_PRODUCTS,
-  data,
 });
 
 export const setReviews = data => ({
@@ -30,9 +28,8 @@ export const setReviews = data => ({
   data,
 });
 
-export const cleanReviews = data => ({
+export const cleanReviews = () => ({
   type: CLEAN_REVIEWS,
-  data,
 });
 
 const initialState = {

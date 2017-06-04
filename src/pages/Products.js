@@ -16,7 +16,8 @@ import { Actions } from 'react-native-router-flux';
 import colors from '../constants/colors';
 import Header from '../components/Header';
 import ProductRow from '../components/ProductRow';
-
+import { authClean } from '../redux/auth';
+import { cleanProducts } from '../redux/products';
 import { 
   apiGetProducts,
 } from '../redux/sagas/products/products';
@@ -81,6 +82,12 @@ class Products extends Component {
     Actions.productinfo();
   }
 
+  logOut = () => {
+    this.props.authClean();
+    this.props.cleanProducts()
+    Actions.main();
+  }
+
   renderRows = (rowData) => {
     return (
       <ProductRow
@@ -97,7 +104,8 @@ class Products extends Component {
         <Spinner visible={this.state.visible} overlayColor={'transparent'} color={colors.grayColor} />
         <Header 
           leftAction={this.backButtonPress}
-          title={'Products'}
+          rightAction={this.logOut}
+          title={'Products'}          
         />
         <ListView
           style={styles.listView}
@@ -114,4 +122,6 @@ export default connect(state => ({
   token: state.auth.token,
 }), dispatch => bindActionCreators({
   apiGetProducts,
+  authClean,
+  cleanProducts,
 }, dispatch))(Products);

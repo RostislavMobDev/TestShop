@@ -7,7 +7,8 @@ import {
   Platform,
   Image,
   ListView,
-  Alert
+  Alert, 
+  ScrollView
 } from 'react-native';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -15,6 +16,8 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { Actions } from 'react-native-router-flux';
 import { API_IMAGES, REVIEWS } from '../constants/config';
+import { authClean, } from '../redux/auth';
+import { cleanProducts, cleanSelectedProduct, cleanReviews, } from '../redux/products';
 import colors from '../constants/colors';
 import Header from '../components/Header';
 import ReviewRow from '../components/ReviewRow';
@@ -68,11 +71,17 @@ const styles = EStyleSheet.create({
   },
   listView: {
     width: displayWidth,
-    height: (Platform.OS === 'ios') ? displayHeight - (70 + displayWidth * 0.7) : displayHeight - 90,
+    height: (Platform.OS === 'ios') ? displayHeight - (120 + displayWidth * 0.7) : displayHeight - 90,
   }, 
   image: {
     width: displayWidth,
     height: displayWidth * 0.7,
+  },
+  descriptionContainer: {
+    padding: 15,
+  },
+  description: {
+    fontSize: 15,
   }
 });
 
@@ -87,7 +96,7 @@ class ProductInfo extends Component {
   }
 
   componentDidMount() {
-    this.gettingProduct();    
+    this.gettingProduct();  
   }
 
   gettingProduct = () => {
@@ -103,6 +112,14 @@ class ProductInfo extends Component {
 
   backButtonPress = () => {
     Actions.pop();
+  }
+
+  logOut = () => {
+    this.props.authClean();
+    this.props.cleanProducts();
+    this.props.cleanSelectedProduct();
+    this.props.cleanReviews();
+    Actions.main();
   }
 
   renderRows = (rowData) => {
@@ -121,7 +138,9 @@ class ProductInfo extends Component {
         <Spinner visible={this.state.visible} overlayColor={'transparent'} color={colors.grayColor} />
         <Header 
           leftAction={this.backButtonPress}
+          rightAction={this.logOut}
           title={this.props.selectedProduct.title}
+          isShowLeftButton
         />
         <View>
           <Image 
@@ -129,6 +148,9 @@ class ProductInfo extends Component {
             resizeMode='contain'
             style={styles.image}
           />
+        </View>
+        <View style={styles.descriptionContainer}>
+          <Text style={styles.description}>{this.props.selectedProduct.text}</Text>
         </View>
         <ListView
          style={styles.listView}
@@ -146,4 +168,8 @@ export default connect(state => ({
   reviews: state.products.reviews,
 }), dispatch => bindActionCreators({
   apiGetReview,
+  authClean,
+  cleanProducts,
+  cleanSelectedProduct,
+  cleanReviews,
 }, dispatch))(ProductInfo);

@@ -30,11 +30,18 @@ const styles = EStyleSheet.create({
   rightContainerStyle: {
     flex: 1,
   },
-  buttonStyle: {
+  leftButtonStyle: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'flex-start',
     flexDirection: 'row',
+  },
+  rightButtonStyle: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    flexDirection: 'row',
+    paddingRight: 15,
   },
   titleContainerSyle: {
     flex: 1,
@@ -45,6 +52,10 @@ const styles = EStyleSheet.create({
     color: colors.whiteColor,
     fontSize: 17,   
   },
+  buttonTitle: {
+    color: colors.whiteColor,
+    fontSize: 14,    
+  }
 });
 
 EStyleSheet.build();
@@ -55,21 +66,30 @@ export default class Header extends React.Component {
     return (
       <View style={styles.containerStyle}>
         <View style={styles.leftContainerStyle}>
-          <TouchableOpacity 
-            style={styles.buttonStyle} 
-            onPress={this.props.leftAction}
-          >
-            <Image 
-              source={backButtonIcon}
-              resizeMode='contain'
-              style={{ width: 50, height: 20, }}
-            />
-          </TouchableOpacity>
+        {
+          (this.props.isShowLeftButton) &&
+            <TouchableOpacity 
+              style={styles.leftButtonStyle} 
+              onPress={this.props.leftAction}
+            >
+              <Image 
+                source={backButtonIcon}
+                resizeMode='contain'
+                style={{ width: 50, height: 20, }}
+              />
+            </TouchableOpacity>
+        }
         </View>
         <View style={styles.titleContainerSyle}>
           <Text style={styles.titlePageStyle}>{this.props.title}</Text>
         </View>
-        <View style={styles.rightContainerStyle}>       
+        <View style={styles.rightContainerStyle}> 
+          <TouchableOpacity 
+            style={styles.rightButtonStyle} 
+            onPress={this.props.rightAction}
+          >
+            <Text style={styles.buttonTitle}>LogOut</Text>
+          </TouchableOpacity>
         </View>
       </View>
     );

@@ -1,5 +1,5 @@
 export const SET_USERNAME = 'AUTH_SET_USERNAME';
-export const CLEAN_USERNAME = 'AUTH_CLEAN_USERNAME';
+export const AUTH_CLEAN = 'AUTH_CLEAN';
 export const SET_TOKEN = 'AUTH_SET_TOKEN';
 
 export const authSetUsername = data => ({
@@ -7,9 +7,8 @@ export const authSetUsername = data => ({
   data,
 });
 
-export const authCleanUsername = data => ({
-  type: CLEAN_USERNAME,
-  data,
+export const authClean = () => ({
+  type: AUTH_CLEAN,
 });
 
 export const authSetToken = data => ({
@@ -30,8 +29,9 @@ export default (_state = initialState, action = {}) => {
     case SET_USERNAME:
       state.username = action.data;
       break;
-    case CLEAN_USERNAME:
+    case AUTH_CLEAN:
       state.username = '';
+      state.token = '';
       break;
     case SET_TOKEN:
       state.token = action.data;

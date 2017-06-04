@@ -40,7 +40,6 @@ function* fetchLogin(data) {
 function* fetchRegistration(data) {
   try {
     const result = yield Query.registrationQuery(data.username, data.password);
-    console.warn('qwe ', result);
     if (result.success) {
       yield put(authActions.authSetUsername(data.username));
       yield put(authActions.authSetToken(result.token));
