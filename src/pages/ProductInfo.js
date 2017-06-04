@@ -8,7 +8,7 @@ import {
   Image,
   ListView,
   Alert, 
-  ScrollView
+  Modal,
 } from 'react-native';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -18,9 +18,13 @@ import { Actions } from 'react-native-router-flux';
 import { API_IMAGES, REVIEWS } from '../constants/config';
 import { authClean, } from '../redux/auth';
 import { cleanProducts, cleanSelectedProduct, cleanReviews, } from '../redux/products';
+import { 
+  apiPostReview,
+} from '../redux/sagas/products/products';
 import colors from '../constants/colors';
 import Header from '../components/Header';
 import ReviewRow from '../components/ReviewRow';
+import Review from '../components/Review';
 
 import { 
   apiGetReview,
@@ -30,6 +34,7 @@ const displayWidth = Dimensions.get('window').width;
 const displayHeight = Dimensions.get('window').height;
 
 const backButtonIcon = require('../resources/back_button_icon.png');
+const plusIcon = require('../resources/plus_icon.png');
 
 const styles = EStyleSheet.create({
   pageContainer: {
@@ -82,6 +87,24 @@ const styles = EStyleSheet.create({
   },
   description: {
     fontSize: 15,
+  },
+  bottomButton: { 
+    position: 'absolute', 
+    bottom: 5, 
+    right: 5, 
+    borderRadius: 25, 
+    width: 50, 
+    height: 50, 
+    backgroundColor: 'rgba(122, 57, 150, 0.8)',
+    // backgroundColor: 'rgb(122, 57, 150)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row'
+  },
+  bottomButtonTitle: {
+    fontSize: 40,
+    color: 'white',
+    textAlign: 'center',
   }
 });
 
@@ -92,14 +115,15 @@ class ProductInfo extends Component {
     super();
     this.state = {
       visible: true,
+      showReviewForm: false,
     };   
   }
 
   componentDidMount() {
-    this.gettingProduct();  
+    this.gettingProductReviews();  
   }
 
-  gettingProduct = () => {
+  gettingProductReviews = () => {
     this.props.apiGetReview(this.props.token, this.props.selectedProduct.id, (success) => {
       if (success) {
         this.setState({ visible: false })
@@ -120,6 +144,25 @@ class ProductInfo extends Component {
     this.props.cleanSelectedProduct();
     this.props.cleanReviews();
     Actions.main();
+  }
+
+  openReviewForm = () => {
+    this.setState({ showReviewForm: true });
+  }
+
+  postReview = (data) => {
+    this.props.apiPostReview(this.props.token, data, this.props.selectedProduct.id, (success) => {
+      if (success) {
+        this.hideReviewForm();
+        // this.setState({ visible: true }, () => {
+          this.gettingProductReviews();
+        // });
+      }
+    });
+  }
+
+  hideReviewForm = () => {
+    this.setState({ showReviewForm: false });
   }
 
   renderRows = (rowData) => {
@@ -158,6 +201,31 @@ class ProductInfo extends Component {
          renderRow={this.renderRows}
          enableEmptySections
        />
+       {
+        (this.props.token.length > 0) &&
+          <TouchableOpacity
+            style={styles.bottomButton}
+            onPress={() => this.openReviewForm()}
+          >
+            <Image 
+              source={plusIcon}
+              style={{ width: 30, height: 30 }}
+              resizeMode='contain'
+            />
+          </TouchableOpacity>
+       }
+        <Modal
+          animationType={"fade"}
+          transparent
+          visible={this.state.showReviewForm}
+          onRequestClose={() => this.setState({ showReviewForm: false })}
+        >
+          <Review 
+            hideReviewForm={this.hideReviewForm}
+            postReview={this.postReview}
+            id={this.props.selectedProduct.id}
+          />
+        </Modal>
       </View>
     );
   }
@@ -172,4 +240,5 @@ export default connect(state => ({
   cleanProducts,
   cleanSelectedProduct,
   cleanReviews,
+  apiPostReview,
 }, dispatch))(ProductInfo);

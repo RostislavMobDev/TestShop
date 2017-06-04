@@ -28,7 +28,7 @@ export async function loginQuery(username, password) {
     }
     return responseJson;
   } catch(error) {
-    console.log('error123123. ', error);
+    console.log('error ', error);
   }
 }
 
@@ -89,7 +89,6 @@ export async function postReviewQuery(token, product_id, data) {
       body: JSON.stringify(data),
     });
     let responseJson = false;
-
     try {
       responseJson = await response.json();
     } catch (error) {

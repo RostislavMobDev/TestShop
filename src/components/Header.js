@@ -21,7 +21,7 @@ const styles = EStyleSheet.create({
     width: widthHeader,
     height: heightContainers,
     alignItems: 'center',
-    backgroundColor: 'blue',
+    backgroundColor: 'rgb(122, 57, 150)',
     flexDirection: 'row',
   },
   leftContainerStyle: {

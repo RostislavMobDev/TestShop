@@ -14,6 +14,7 @@ export const apiGetProducts = (token, callback) => ({
 
 export const apiPostReview = (token, data, product_id, callback) => ({
   type: POST_REVIEW,
+  token,
   data,
   product_id,
   callback,
@@ -29,7 +30,7 @@ export const apiGetReview = (token, product_id, callback) => ({
 function* fetchGetProducts(data) {
   try {
     const result = yield Query.productsQuery(data.token);
-    if (result) {
+    if (result && Array.isArray(result)) {
       yield put(productsActions.setProducts(result));
       data.callback(true);
     } else {
@@ -43,10 +44,8 @@ function* fetchGetProducts(data) {
 
 function* fetchPostReview(data) {
   try {
-    const result = yield Query.postReviewQuery(data.token,data.product_id, data.data);
-    if (result) {
-      // yield put(authActions.authSetUsername(data.username));
-      // yield put(authActions.authSetToken(result.token));
+    const result = yield Query.postReviewQuery(data.token, data.product_id, data.data);
+    if (result.status === 200) {
       data.callback(true);
     } else {
       data.callback(false);
@@ -60,7 +59,7 @@ function* fetchPostReview(data) {
 function* fetchGetReview(data) {
   try {
     const result = yield Query.getReviewQuery(data.token, data.product_id);
-    if (result) {    
+    if (result && Array.isArray(result)) {    
       yield put(productsActions.setReviews(result));
       data.callback(true);
     } else {

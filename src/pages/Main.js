@@ -27,7 +27,7 @@ const styles = EStyleSheet.create({
     justifyContent: 'center',
     borderRadius: 7,
     marginTop: 20,
-    backgroundColor: 'blue'
+    backgroundColor: 'rgb(122, 57, 150)'
   },
   buttonTitle: {
     fontSize: 15,

@@ -25,8 +25,6 @@ import {
 const displayWidth = Dimensions.get('window').width;
 const displayHeight = Dimensions.get('window').height;
 
-const backButtonIcon = require('../resources/back_button_icon.png');
-
 const styles = EStyleSheet.create({
   pageContainer: {
     width: displayWidth,
@@ -34,15 +32,6 @@ const styles = EStyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   }, 
-  backButton: {
-    width: 50,
-    height: 50,
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'absolute',
-    top: (Platform.OS === 'ios') ? 20 : 0,
-    left: 0, 
-  },
   listView: {
     width: displayWidth,
     height: (Platform.OS === 'ios') ? displayHeight - 70 : displayHeight - 90,
@@ -100,7 +89,7 @@ class Products extends Component {
   render() {
    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});   
     return (
-      <View>
+      <View style={styles.pageContainer}>
         <Spinner visible={this.state.visible} overlayColor={'transparent'} color={colors.grayColor} />
         <Header 
           leftAction={this.backButtonPress}
