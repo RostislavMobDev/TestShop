@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 
 import EStyleSheet from 'react-native-extended-stylesheet';
+import { connect } from 'react-redux';
 import colors from '../constants/colors';
 
 const backButtonIcon = require('../resources/back_button_icon.png');
@@ -60,7 +61,7 @@ const styles = EStyleSheet.create({
 
 EStyleSheet.build();
 
-export default class Header extends React.Component {
+class Header extends React.Component {
 
   render() {
     return (
@@ -83,15 +84,21 @@ export default class Header extends React.Component {
         <View style={styles.titleContainerSyle}>
           <Text style={styles.titlePageStyle}>{this.props.title}</Text>
         </View>
-        <View style={styles.rightContainerStyle}> 
-          <TouchableOpacity 
-            style={styles.rightButtonStyle} 
-            onPress={this.props.rightAction}
-          >
-            <Text style={styles.buttonTitle}>LogOut</Text>
-          </TouchableOpacity>
+        <View style={styles.rightContainerStyle}>
+        {
+          (this.props.token.length > 0) &&
+            <TouchableOpacity 
+              style={styles.rightButtonStyle} 
+              onPress={this.props.rightAction}
+            >
+              <Text style={styles.buttonTitle}>LogOut</Text>
+            </TouchableOpacity>
+        }
         </View>
       </View>
     );
   }
 }
+export default connect(state => ({
+  token: state.auth.token,
+}))(Header);

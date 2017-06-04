@@ -101,11 +101,11 @@ export async function postReviewQuery(token, product_id, data) {
 }
 
 export async function getReviewQuery(token, product_id) {
-  try {
+  try { 
     let response = await fetch(`${API_QUERY}${REVIEWS}${product_id}`, {
       method: 'GET',
       headers: {  
-        Authorization: `Token ${token}`,
+        Authorization: token,
       }, 
     });
     let responseJson = false;

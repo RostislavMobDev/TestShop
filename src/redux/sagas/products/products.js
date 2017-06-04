@@ -45,7 +45,7 @@ function* fetchGetProducts(data) {
 function* fetchPostReview(data) {
   try {
     const result = yield Query.postReviewQuery(data.token, data.product_id, data.data);
-    if (result.status === 200) {
+    if (result.success) {
       data.callback(true);
     } else {
       data.callback(false);

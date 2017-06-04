@@ -154,9 +154,7 @@ class ProductInfo extends Component {
     this.props.apiPostReview(this.props.token, data, this.props.selectedProduct.id, (success) => {
       if (success) {
         this.hideReviewForm();
-        // this.setState({ visible: true }, () => {
-          this.gettingProductReviews();
-        // });
+        this.gettingProductReviews();
       }
     });
   }

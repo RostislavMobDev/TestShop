@@ -94,7 +94,8 @@ class Products extends Component {
         <Header 
           leftAction={this.backButtonPress}
           rightAction={this.logOut}
-          title={'Products'}          
+          title={'Products'}
+          isShowLeftButton={(this.props.token.length > 0) ? false : true}      
         />
         <ListView
           style={styles.listView}
