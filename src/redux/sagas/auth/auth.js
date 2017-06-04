@@ -23,10 +23,12 @@ export const apiAuthRegistration = (username, password, callback) => ({
 function* fetchLogin(data) {
   try { 
     const result = yield Query.loginQuery(data.username, data.password);
-     if (result) {    
+     if (result.success) {
       yield put(authActions.authSetUsername(data.username));
       yield put(authActions.authSetToken(result.token));
       data.callback(true);
+    } else if (result.message) {
+      data.callback(false, result.message);
     } else {
       data.callback(false);
     }
@@ -38,10 +40,13 @@ function* fetchLogin(data) {
 function* fetchRegistration(data) {
   try {
     const result = yield Query.registrationQuery(data.username, data.password);
-    if (result) {
+    console.warn('qwe ', result);
+    if (result.success) {
       yield put(authActions.authSetUsername(data.username));
       yield put(authActions.authSetToken(result.token));
       data.callback(true);
+    } else if (result.message) {
+      data.callback(false, result.message);
     } else {
       data.callback(false);
     }

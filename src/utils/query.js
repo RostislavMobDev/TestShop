@@ -38,23 +38,25 @@ export async function registrationQuery(username, password) {
       "username": username,
       "password": password
     }
+    console.warn('userData ', API_QUERY, REGISTER);
     let response = await fetch(`${API_QUERY}${REGISTER}`, {
       method: 'POST',
-      headers: {  
-        'Content-Type': 'application/json',
-      },
+      // headers: {  
+      //   'Content-Type': 'application/json',
+      // },
       body: JSON.stringify(userData),
     });
     let responseJson = false;
-
+    console.warn('aqasd ', response);
     try {
       responseJson = await response.json();
     } catch (error) {
+      console.log('Error ', error);
       return false;
     }
     return responseJson;
   } catch(error) {
-    console.log(error);
+    console.log('Resfd', error);
   }
 }
 
@@ -108,24 +110,6 @@ export async function getReviewQuery(token, product_id) {
       headers: {  
         Authorization: `Token ${token}`,
       }, 
-    });
-    let responseJson = false;
-
-    try {
-      responseJson = await response.json();
-    } catch (error) {
-      return false;
-    }
-    return responseJson;
-  } catch(error) {
-    console.log(error);
-  }
-}
-
-export async function getImageQuery(img) {
-  try {
-    let response = await fetch(`${API_IMAGES}${img}`, {
-      method: 'GET',
     });
     let responseJson = false;
 

@@ -4,15 +4,14 @@ import {
   Platform,
   Dimensions,
   TouchableOpacity,
-  Text,
   Image,
 } from 'react-native';
-
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import colors from '../constants/colors';
 import { API_IMAGES } from '../constants/config';
-
-const backButtonIcon = require('../resources/back_button_icon.png');
+import { setSelectedProduct } from '../redux/products';
 
 const { widthHeader } = Dimensions.get('window');
 const heightContainers = 150;
@@ -30,14 +29,19 @@ const styles = EStyleSheet.create({
 
 EStyleSheet.build();
 
-export default class ProductRow extends React.Component {
+class ProductRow extends React.Component {
+
+  openProductDetails = () => {
+    this.props.setSelectedProduct(this.props.data);
+    this.props.openProductDetails();
+  }
 
   render() {
     return (
       <View style={styles.containerStyle}>
         <TouchableOpacity 
           style={styles.buttonStyle} 
-          onPress={this.props.leftAction}
+          onPress={() => this.openProductDetails()}
         >
           <Image 
             source={{uri: `${API_IMAGES}${this.props.data.img}`}}
@@ -49,3 +53,8 @@ export default class ProductRow extends React.Component {
     );
   }
 }
+export default connect(state => ({
+  selectedProduct: state.products.selectedProduct,
+}), dispatch => bindActionCreators({
+  setSelectedProduct,
+}, dispatch))(ProductRow);

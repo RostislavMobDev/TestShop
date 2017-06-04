@@ -17,6 +17,7 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { Actions } from 'react-native-router-flux';
 import colors from '../constants/colors';
+import * as auth from '../redux/sagas/auth/auth';
 
 const displayWidth = Dimensions.get('window').width;
 const displayHeight = Dimensions.get('window').height;
@@ -72,7 +73,7 @@ class SignUp extends Component {
       visibleSpinner: false,
       username: '',
       password: '',
-      repeatPassword: '',
+      confirmPassword: '',
     };
   }
 
@@ -87,18 +88,32 @@ class SignUp extends Component {
   }
 
   registerPress = () => {
-    if (this.state.username.length > 0 && this.state.password.length > 0 && this.state.repeatPassword.length > 0) {
-      if (this.password === this.repeatPassword) {
+    if (this.state.username.length > 0 && this.state.password.length > 0 && this.state.confirmPassword.length > 0) {
+      if (this.password === this.confirmPassword) {
         this.setState({ visible: true });
+        this.props.dispatch(auth.apiAuthRegistration(this.state.username, this.state.password, (success, message) => {
+          if (success) {
+            this.setState({ visible: false }, () => {
+              Actions.products();
+            });           
+          } else if (!success && message){        
+            this.hideSpinnerAfterError(message);   
+          } else {
+            this.hideSpinnerAfterError('Something went wrong, please try again');          
+          }
+        }));
       } else {
-        this.setState({ visible: false });
-        Alert.alert('Error!', 'Please fill all fields', [{ text: 'OK' }]);
+        this.hideSpinnerAfterError('Confirm password does not match the entered password'); 
       }     
 
     } else {
-      this.setState({ visible: false });
-      Alert.alert('Error!', 'Please fill all fields', [{ text: 'OK' }]);
+      this.hideSpinnerAfterError('Please fill all fields'); 
     }
+  }
+
+  hideSpinnerAfterError = (message) => {
+    Alert.alert('Error', message, 
+      [{ text: 'OK',  onPress: () => this.setState({ visible: false }) }]);
   }
 
   backButtonPress = () => {
@@ -138,10 +153,10 @@ class SignUp extends Component {
             />
             <TextInput
               style={styles.textInput}
-              placeholder={'Repeate Password'}
+              placeholder={'Confirm Password'}
               underlineColorAndroid={'#00000000'}
               secureTextEntry
-              onChangeText={(text) => this.setState({ repeatPassword: text })}
+              onChangeText={(text) => this.setState({ confirmPassword: text })}
               placeholderTextColor={'black'}
               onKeyPress={(event) => { this.doneButtonPress(event); }}
               returnKeyType='done'
@@ -152,12 +167,6 @@ class SignUp extends Component {
             onPress={() => this.registerPress()}
           >
             <Text style={styles.buttonTitle}>Register</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => this.cancelButtonPress()}
-          >
-            <Text style={styles.buttonTitle}>Cancel</Text>
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>

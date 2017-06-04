@@ -81,23 +81,30 @@ class Login extends Component {
     }
   }
 
-  logInButtonPress = () => {
-    this.setState({ visible: true });
+  logInButtonPress = () => {    
     if (this.state.username.length > 0 && this.state.password.length > 0) {
-      this.props.dispatch(auth.apiAuthLogin(this.state.username, this.state.password, (success) => {
+      this.setState({ visible: true });
+      this.props.dispatch(auth.apiAuthLogin(this.state.username, this.state.password, (success, message) => {
         if (success) {
           this.setState({ visible: false }, () => {
             Actions.products();
-          });          
+          });           
+        } else if (!success && message){        
+          this.hideSpinnerAfterError(message);   
         } else {
-          this.setState({ visible: false });
-          Alert.alert('', 'Something went wrong, please try again', [{ text: 'OK' }]);
+          this.hideSpinnerAfterError('Something went wrong, please try again');          
         }
       }));
     } else {
-      this.setState({ visible: false });
-      Alert.alert('Error!', 'Please fill all fields', [{ text: 'OK' }]);
+      this.setState({ visible: false }, () => {
+        Alert.alert('', 'Something went wrong, please try again', [{ text: 'OK' }]);
+      }); 
     }
+  }
+
+  hideSpinnerAfterError = (message) => {
+    Alert.alert('Error', message, 
+      [{ text: 'OK',  onPress: () => this.setState({ visible: false }) }]);
   }
 
   noaccountButtonPress = () => {

@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Platform, 
 } from 'react-native';
+
 import EStyleSheet from 'react-native-extended-stylesheet';
 import { Actions } from 'react-native-router-flux';
 
@@ -46,7 +47,6 @@ export default class Main extends Component {
   }
 
   render() {
-
     return (
       <View style={styles.pageContainer}>        
         <TouchableOpacity

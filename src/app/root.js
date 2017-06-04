@@ -10,6 +10,7 @@ import Main from '../pages/Main';
 import Login from '../pages/Login';
 import SignUp from '../pages/SignUp';
 import Products from '../pages/Products';
+import ProductInfo from '../pages/ProductInfo';
 
 const styles = EStyleSheet.create({
   container: {
@@ -30,6 +31,7 @@ class Root extends React.Component {
             <Scene key="login" component={Login} />
             <Scene key="signup" component={SignUp} />
             <Scene key="products" component={Products} /> 
+            <Scene key="productinfo" component={ProductInfo} /> 
           </Scene>
         </Router>
       </View>
