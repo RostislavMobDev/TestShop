@@ -7,7 +7,8 @@ import {
   Platform,
   Image,
   ListView,
-  AsyncStorage
+  AsyncStorage,
+  Alert,
 } from 'react-native';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -51,7 +52,12 @@ class Products extends Component {
   }
 
   componentDidMount() {
-    this.gettingProducts();
+    if (this.props.isConnected) {
+      this.gettingProducts();
+    } else {   
+      Alert.alert('Error', 'No internet connection', 
+        [{ text: 'OK',  onPress: () => this.setState({ visible: false }) }]);
+    }
   }
 
   gettingProducts = () => {
@@ -113,6 +119,7 @@ class Products extends Component {
 export default connect(state => ({
   products: state.products.products,
   token: state.auth.token,
+  isConnected: state.network.isConnected,
 }), dispatch => bindActionCreators({
   apiGetProducts,
   authClean,

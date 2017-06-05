@@ -3,6 +3,8 @@ import {
   View,
   Platform,
   AsyncStorage,
+  NetInfo,
+  Alert,
 } from 'react-native';
 import { connect } from 'react-redux';
 import EStyleSheet from 'react-native-extended-stylesheet';
@@ -14,6 +16,7 @@ import Products from '../pages/Products';
 import ProductInfo from '../pages/ProductInfo';
 import * as authActions from '../redux/auth';
 import { ASYNCSTORAGE_TOKEN_KEY } from '../constants/config';
+import * as networkActions from '../redux/network';
  
 const styles = EStyleSheet.create({
   container: {
@@ -26,7 +29,23 @@ EStyleSheet.build();
 
 class Root extends React.Component {
   componentDidMount() {
+    NetInfo.addEventListener(
+      'change',
+      this.handleConnectivityChange,
+    );
     this.loadUserToken()
+  }
+
+  handleConnectivityChange = (reach) => {
+    const isConnected = (reach.toLowerCase() !== 'none' && reach.toLowerCase() !== 'unknown');
+    this.props.dispatch(networkActions.setNetworkIsConnected(isConnected));
+  };
+
+  componentWillUnmount() {
+    NetInfo.removeEventListener(
+      'change',
+      this.handleConnectivityChange,
+    );
   }
 
   loadUserToken = async () => {

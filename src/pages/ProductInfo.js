@@ -99,7 +99,6 @@ const styles = EStyleSheet.create({
     width: 50, 
     height: 50, 
     backgroundColor: 'rgba(122, 57, 150, 0.8)',
-    // backgroundColor: 'rgb(122, 57, 150)',
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'row'
@@ -124,7 +123,12 @@ class ProductInfo extends Component {
   }
 
   componentDidMount() {
-    this.gettingProductReviews();
+    if (this.props.isConnected) {
+      this.gettingProductReviews();
+    } else {   
+      Alert.alert('Error', 'No internet connection', 
+        [{ text: 'OK',  onPress: () => this.setState({ visible: false }) }]);
+    }
     InteractionManager.runAfterInteractions(() => {
       this.setState({loading: false});
     });
@@ -253,6 +257,7 @@ export default connect(state => ({
   selectedProduct: state.products.selectedProduct,
   token: state.auth.token,
   reviews: state.products.reviews,
+  isConnected: state.network.isConnected,
 }), dispatch => bindActionCreators({
   apiGetReview,
   authClean,
