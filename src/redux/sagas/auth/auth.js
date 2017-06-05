@@ -1,7 +1,9 @@
 import { takeLatest, takeEvery, delay } from 'redux-saga';
+import { AsyncStorage } from 'react-native';
 import { call, put, fork } from 'redux-saga/effects';
 import * as authActions from '../../auth';
 import * as Query from '../../../utils/query';
+import { ASYNCSTORAGE_TOKEN_KEY } from '../../../constants/config';
 
 export const LOGIN = 'AUTH_LOGIN';
 export const REGISTRATION = 'AUTH_REGISTRATION';
@@ -26,6 +28,7 @@ function* fetchLogin(data) {
      if (result.success) {
       yield put(authActions.authSetUsername(data.username));
       yield put(authActions.authSetToken(result.token));
+      AsyncStorage.setItem(ASYNCSTORAGE_TOKEN_KEY, result.token);
       data.callback(true);
     } else if (result.message) {
       data.callback(false, result.message);

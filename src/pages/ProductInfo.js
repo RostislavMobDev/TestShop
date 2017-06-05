@@ -9,6 +9,8 @@ import {
   ListView,
   Alert, 
   Modal,
+  AsyncStorage,
+  InteractionManager,
 } from 'react-native';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -21,6 +23,7 @@ import { cleanProducts, cleanSelectedProduct, cleanReviews, } from '../redux/pro
 import { 
   apiPostReview,
 } from '../redux/sagas/products/products';
+import { ASYNCSTORAGE_TOKEN_KEY } from '../constants/config';
 import colors from '../constants/colors';
 import Header from '../components/Header';
 import ReviewRow from '../components/ReviewRow';
@@ -76,7 +79,7 @@ const styles = EStyleSheet.create({
   },
   listView: {
     width: displayWidth,
-    height: (Platform.OS === 'ios') ? displayHeight - (120 + displayWidth * 0.7) : displayHeight - 90,
+    height: (Platform.OS === 'ios') ? displayHeight - (120 + displayWidth * 0.7) : displayHeight - (145 + displayWidth * 0.7),
   }, 
   image: {
     width: displayWidth,
@@ -90,7 +93,7 @@ const styles = EStyleSheet.create({
   },
   bottomButton: { 
     position: 'absolute', 
-    bottom: 5, 
+    bottom: (Platform.OS === 'ios') ? 5 : 25, 
     right: 5, 
     borderRadius: 25, 
     width: 50, 
@@ -116,11 +119,15 @@ class ProductInfo extends Component {
     this.state = {
       visible: true,
       showReviewForm: false,
+      loading: true,
     };   
   }
 
   componentDidMount() {
-    this.gettingProductReviews();  
+    this.gettingProductReviews();
+    InteractionManager.runAfterInteractions(() => {
+      this.setState({loading: false});
+    });
   }
 
   gettingProductReviews = () => {
@@ -143,6 +150,7 @@ class ProductInfo extends Component {
     this.props.cleanProducts();
     this.props.cleanSelectedProduct();
     this.props.cleanReviews();
+    AsyncStorage.removeItem(ASYNCSTORAGE_TOKEN_KEY);
     Actions.main();
   }
 
@@ -172,6 +180,19 @@ class ProductInfo extends Component {
   }
 
   render() {
+    if (this.state.loading) {
+      return (
+        <View>
+          <Header 
+            leftAction={this.backButtonPress}
+            rightAction={this.logOut}
+            title={this.props.selectedProduct.title}
+            isShowLeftButton
+          />
+          <Spinner visible={this.state.visible} overlayColor={'transparent'} color={colors.grayColor} />
+        </View>
+      )
+    }
    
    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});   
     return (

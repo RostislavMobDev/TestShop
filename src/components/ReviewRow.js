@@ -68,7 +68,7 @@ export default class ReviewRow extends React.Component {
       <View style={styles.container}>
         <View style={styles.reviewContainer}>
           <Text style={styles.username}>{this.props.rowData.created_by.username}</Text>
-          <Text>{this.props.rowData.text}</Text>
+          <Text lineBreakMode="tail" numberOfLines={1}>{this.props.rowData.text}</Text>
         </View>
         <View style={styles.dateAndRateContainer}>
           <View style={styles.dateContainer}>

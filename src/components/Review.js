@@ -6,7 +6,9 @@ import {
   TouchableOpacity,
   Platform,
   TextInput,
-  Image
+  Image,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import colors from '../constants/colors';
@@ -35,10 +37,12 @@ const styles = EStyleSheet.create({
     borderRadius: 10,
   },
   input: {
-    margin: 5,
+    width: displayWidth - 90,
+    height: 160,
     height: 160,
     paddingLeft: 5,
-    fontSize: 14
+    fontSize: 14,
+    textAlignVertical: 'top',
   },
   buttonContainer: {
     flexDirection: 'row',
@@ -95,60 +99,70 @@ export default class Products extends Component {
     }
   }
 
+  hideKeyboard = () => {
+    Keyboard.dismiss();
+  }
+
   render() {
     const listIcons = new Array(5);
     listIcons.fill(starInactive);
     return (
-      <View style={styles.pageContainer}>        
-        <View style={styles.form}>
-          <TextInput
-            autoCorrect={false}
-            multiline
-            placeholder={'Add review...'}
-            value={this.state.text}
-            style={styles.input}
-            onChangeText={(text) => this.setState({ text })}
-          />
-          <View style={styles.rate}>
-          <TouchableOpacity
-            style={styles.rateButton}
-            onPress={() => this.decreaseRate()}
-          >
-            <Text style={styles.rateButtonTitle}>-</Text>
-          </TouchableOpacity>
-          {            
-            listIcons.map((icon, index) =>      
-              <Image 
-                key={`key${index}`}
-                source={(index + 1 <= this.state.rate) ? starActive : icon}
-                resizeMode='contain'
-                style={{ width: 20, height: 20 }}
-              />  
-            )
-          }
-          <TouchableOpacity
-            style={styles.rateButton}
-            onPress={() => this.increaseRate()}
-          >
-            <Text style={styles.rateButtonTitle}>+</Text>
-          </TouchableOpacity>
-          </View>
-          <View style={styles.buttonContainer}>
+      <TouchableWithoutFeedback 
+        style={{ flex: 1 }}
+        onPress={() => this.hideKeyboard()}
+      >
+        <View style={styles.pageContainer}>
+          <View style={styles.form}>
+            <TextInput
+              autoCorrect={false}
+              multiline
+              placeholder={'Add review...'}
+              value={this.state.text}
+              style={styles.input}
+              onChangeText={(text) => this.setState({ text })}
+              underlineColorAndroid={'transparent'}
+            />
+            <View style={styles.rate}>
             <TouchableOpacity
-              style={styles.button}
-              onPress={() => this.props.hideReviewForm()}
+              style={styles.rateButton}
+              onPress={() => this.decreaseRate()}
             >
-              <Text>Cancel</Text>
+              <Text style={styles.rateButtonTitle}>-</Text>
             </TouchableOpacity>
+            {            
+              listIcons.map((icon, index) =>      
+                <Image 
+                  key={`key${index}`}
+                  source={(index + 1 <= this.state.rate) ? starActive : icon}
+                  resizeMode='contain'
+                  style={{ width: 20, height: 20 }}
+                />  
+              )
+            }
             <TouchableOpacity
-              style={styles.button}
-              onPress={() => this.props.postReview(this.state)}
+              style={styles.rateButton}
+              onPress={() => this.increaseRate()}
             >
-              <Text>Done</Text>
+              <Text style={styles.rateButtonTitle}>+</Text>
             </TouchableOpacity>
+            </View>
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => this.props.hideReviewForm()}
+              >
+                <Text>Cancel</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => this.props.postReview(this.state)}
+              >
+                <Text>Done</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
-      </View>
+      </TouchableWithoutFeedback>
     );
   }
 }

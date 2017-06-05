@@ -1,7 +1,8 @@
 import React from 'react';
 import {
   View,
-  Platform
+  Platform,
+  AsyncStorage,
 } from 'react-native';
 import { connect } from 'react-redux';
 import EStyleSheet from 'react-native-extended-stylesheet';
@@ -11,7 +12,9 @@ import Login from '../pages/Login';
 import SignUp from '../pages/SignUp';
 import Products from '../pages/Products';
 import ProductInfo from '../pages/ProductInfo';
-
+import * as authActions from '../redux/auth';
+import { ASYNCSTORAGE_TOKEN_KEY } from '../constants/config';
+ 
 const styles = EStyleSheet.create({
   container: {
     flex: 1,
@@ -22,6 +25,22 @@ const styles = EStyleSheet.create({
 EStyleSheet.build();
 
 class Root extends React.Component {
+  componentDidMount() {
+    this.loadUserToken()
+  }
+
+  loadUserToken = async () => {
+    try {
+      const value = await AsyncStorage.getItem(ASYNCSTORAGE_TOKEN_KEY);
+      if (value !== null) {
+        this.props.dispatch(authActions.authSetToken(value));
+        Actions.products();
+      }
+    } catch (error) {
+      console.log('load data error: ' + error.message);
+    }
+  };
+
   render() {
     return (
       <View style={styles.container}>

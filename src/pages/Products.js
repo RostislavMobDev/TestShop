@@ -6,7 +6,8 @@ import {
   TouchableOpacity,
   Platform,
   Image,
-  ListView
+  ListView,
+  AsyncStorage
 } from 'react-native';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -21,6 +22,7 @@ import { cleanProducts } from '../redux/products';
 import { 
   apiGetProducts,
 } from '../redux/sagas/products/products';
+import { ASYNCSTORAGE_TOKEN_KEY } from '../constants/config';
 
 const displayWidth = Dimensions.get('window').width;
 const displayHeight = Dimensions.get('window').height;
@@ -73,7 +75,8 @@ class Products extends Component {
 
   logOut = () => {
     this.props.authClean();
-    this.props.cleanProducts()
+    this.props.cleanProducts();
+    AsyncStorage.removeItem(ASYNCSTORAGE_TOKEN_KEY);
     Actions.main();
   }
 

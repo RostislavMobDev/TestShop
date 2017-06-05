@@ -40,11 +40,11 @@ EStyleSheet.build();
 export default class Main extends Component {
   userAction = () => {
     Actions.login();
-  }
+  };
 
   guestAction = () => {
     Actions.products();
-  }
+  };
 
   render() {
     return (
