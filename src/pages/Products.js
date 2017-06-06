@@ -52,12 +52,14 @@ class Products extends Component {
   }
 
   componentDidMount() {
-    if (this.props.isConnected) {
-      this.gettingProducts();
-    } else {   
-      Alert.alert('Error', 'No internet connection', 
-        [{ text: 'OK',  onPress: () => this.setState({ visible: false }) }]);
-    }
+    setTimeout(() => {  
+      if (this.props.isConnected) {
+        this.gettingProducts();
+      } else {   
+        Alert.alert('Error', 'No internet connection', 
+          [{ text: 'OK',  onPress: () => this.setState({ visible: false }) }]);
+      }
+    }, 0);
   }
 
   gettingProducts = () => {

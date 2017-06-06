@@ -46,6 +46,7 @@ function* fetchRegistration(data) {
     if (result.success) {
       yield put(authActions.authSetUsername(data.username));
       yield put(authActions.authSetToken(result.token));
+      AsyncStorage.setItem(ASYNCSTORAGE_TOKEN_KEY, result.token);
       data.callback(true);
     } else if (result.message) {
       data.callback(false, result.message);
