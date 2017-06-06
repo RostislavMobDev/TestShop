@@ -17,11 +17,12 @@ import ProductInfo from '../pages/ProductInfo';
 import * as authActions from '../redux/auth';
 import { ASYNCSTORAGE_TOKEN_KEY } from '../constants/config';
 import * as networkActions from '../redux/network';
+import colors from '../constants/colors';
  
 const styles = EStyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: colors.whiteColor,
   },
 });
 

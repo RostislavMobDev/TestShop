@@ -16,14 +16,12 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { Actions } from 'react-native-router-flux';
 import colors from '../constants/colors';
+import { ASYNCSTORAGE_TOKEN_KEY } from '../constants/config';
 import Header from '../components/Header';
 import ProductRow from '../components/ProductRow';
 import { authClean } from '../redux/auth';
 import { cleanProducts } from '../redux/products';
-import { 
-  apiGetProducts,
-} from '../redux/sagas/products/products';
-import { ASYNCSTORAGE_TOKEN_KEY } from '../constants/config';
+import { apiGetProducts, } from '../redux/sagas/products/products';
 
 const displayWidth = Dimensions.get('window').width;
 const displayHeight = Dimensions.get('window').height;

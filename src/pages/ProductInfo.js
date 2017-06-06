@@ -17,14 +17,12 @@ import { connect } from 'react-redux';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { Actions } from 'react-native-router-flux';
-import { API_IMAGES, REVIEWS } from '../constants/config';
+import { API_IMAGES, REVIEWS, ASYNCSTORAGE_TOKEN_KEY } from '../constants/config';
+import colors from '../constants/colors';
 import { authClean, } from '../redux/auth';
 import { cleanProducts, cleanSelectedProduct, cleanReviews, } from '../redux/products';
-import { 
-  apiPostReview,
-} from '../redux/sagas/products/products';
-import { ASYNCSTORAGE_TOKEN_KEY } from '../constants/config';
-import colors from '../constants/colors';
+import { apiPostReview, } from '../redux/sagas/products/products';
+
 import Header from '../components/Header';
 import ReviewRow from '../components/ReviewRow';
 import Review from '../components/Review';
@@ -36,7 +34,6 @@ import {
 const displayWidth = Dimensions.get('window').width;
 const displayHeight = Dimensions.get('window').height;
 
-const backButtonIcon = require('../resources/back_button_icon.png');
 const plusIcon = require('../resources/plus_icon.png');
 
 const styles = EStyleSheet.create({
@@ -46,37 +43,6 @@ const styles = EStyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   }, 
-  textInput: {
-    width: displayWidth - 50,
-    height: 40,
-    borderWidth: 1,
-    paddingLeft: 15,
-    fontSize: 14,
-    borderRadius: 7,
-    marginBottom: 20,
-  },
-  button: {
-    width: displayWidth - 50,
-    height: 50,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 7,
-    marginTop: 20,
-    backgroundColor: 'blue'
-  },
-  buttonTitle: {
-    fontSize: 15,
-    color: 'white'
-  },
-  backButton: {
-    width: 50,
-    height: 50,
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'absolute',
-    top: (Platform.OS === 'ios') ? 20 : 0,
-    left: 0, 
-  },
   listView: {
     width: displayWidth,
     height: (Platform.OS === 'ios') ? displayHeight - (120 + displayWidth * 0.7) : displayHeight - (145 + displayWidth * 0.7),
@@ -103,11 +69,6 @@ const styles = EStyleSheet.create({
     justifyContent: 'center',
     flexDirection: 'row'
   },
-  bottomButtonTitle: {
-    fontSize: 40,
-    color: 'white',
-    textAlign: 'center',
-  }
 });
 
 EStyleSheet.build();
@@ -200,7 +161,7 @@ class ProductInfo extends Component {
    
    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});   
     return (
-      <View>
+      <View style={styles.pageContainer}>
         <Spinner visible={this.state.visible} overlayColor={'transparent'} color={colors.grayColor} />
         <Header 
           leftAction={this.backButtonPress}

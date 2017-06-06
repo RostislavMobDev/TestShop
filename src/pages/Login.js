@@ -20,7 +20,7 @@ import * as auth from '../redux/sagas/auth/auth';
 
 const displayWidth = Dimensions.get('window').width;
 const displayHeight = Dimensions.get('window').height;
-const backButtonIcon = require('../resources/back_button_icon.png');
+const backButtonIcon = require('../resources/back_button_icon_black.png');
 
 const styles = EStyleSheet.create({
   pageContainer: {
@@ -45,11 +45,11 @@ const styles = EStyleSheet.create({
     justifyContent: 'center',
     borderRadius: 7,
     marginTop: 20,
-    backgroundColor: 'rgb(122, 57, 150)'
+    backgroundColor: colors.themeColor,
   },
   buttonTitle: {
     fontSize: 15,
-    color: 'white'
+    color: colors.whiteColor,
   },
   backButton: {
     width: 50,

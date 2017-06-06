@@ -12,7 +12,7 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 import { connect } from 'react-redux';
 import colors from '../constants/colors';
 
-const backButtonIcon = require('../resources/back_button_icon.png');
+const backButtonIcon = require('../resources/back_button_icon_white.png');
 
 const { widthHeader } = Dimensions.get('window');
 const heightContainers = 70;
@@ -22,7 +22,7 @@ const styles = EStyleSheet.create({
     width: widthHeader,
     height: heightContainers,
     alignItems: 'center',
-    backgroundColor: 'rgb(122, 57, 150)',
+    backgroundColor: colors.themeColor,
     flexDirection: 'row',
   },
   leftContainerStyle: {

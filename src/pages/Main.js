@@ -9,6 +9,7 @@ import {
 
 import EStyleSheet from 'react-native-extended-stylesheet';
 import { Actions } from 'react-native-router-flux';
+import colors from '../constants/colors';
 
 const displayWidth = Dimensions.get('window').width;
 const displayHeight = Dimensions.get('window').height;
@@ -27,11 +28,11 @@ const styles = EStyleSheet.create({
     justifyContent: 'center',
     borderRadius: 7,
     marginTop: 20,
-    backgroundColor: 'rgb(122, 57, 150)'
+    backgroundColor: colors.themeColor,
   },
   buttonTitle: {
     fontSize: 15,
-    color: 'white'
+    color: colors.whiteColor,
   }
 });
 

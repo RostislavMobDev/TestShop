@@ -32,7 +32,7 @@ const styles = EStyleSheet.create({
     height: 250,
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: 'white',
+    backgroundColor: colors.whiteColor,
     borderWidth: 1,
     borderRadius: 10,
   },

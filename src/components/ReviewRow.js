@@ -25,6 +25,7 @@ const styles = EStyleSheet.create({
     height: heightContainers,
     flexDirection: 'row',
     borderBottomWidth: 1,
+    borderColor: colors.separator,
   },
   reviewContainer: { 
     paddingLeft: 15, 
