@@ -19,6 +19,7 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import { Actions } from 'react-native-router-flux';
 import { API_IMAGES, REVIEWS, ASYNCSTORAGE_TOKEN_KEY } from '../constants/config';
 import colors from '../constants/colors';
+import baseStyles from '../constants/baseStyles';
 import { authClean, } from '../redux/auth';
 import { cleanProducts, cleanSelectedProduct, cleanReviews, } from '../redux/products';
 import { apiPostReview, } from '../redux/sagas/products/products';
@@ -37,12 +38,6 @@ const displayHeight = Dimensions.get('window').height;
 const plusIcon = require('../resources/plus_icon.png');
 
 const styles = EStyleSheet.create({
-  pageContainer: {
-    width: displayWidth,
-    height: (Platform.OS === 'ios') ? displayHeight : displayHeight - 20,
-    alignItems: 'center',
-    justifyContent: 'center',
-  }, 
   listView: {
     width: displayWidth,
     height: (Platform.OS === 'ios') ? displayHeight - (120 + displayWidth * 0.7) : displayHeight - (145 + displayWidth * 0.7),
@@ -161,7 +156,7 @@ class ProductInfo extends Component {
    
    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});   
     return (
-      <View style={styles.pageContainer}>
+      <View style={baseStyles.pageContainer}>
         <Spinner visible={this.state.visible} overlayColor={'transparent'} color={colors.grayColor} />
         <Header 
           leftAction={this.backButtonPress}

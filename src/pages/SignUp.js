@@ -16,6 +16,7 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { Actions } from 'react-native-router-flux';
 import colors from '../constants/colors';
+import baseStyles from '../constants/baseStyles';
 import * as auth from '../redux/sagas/auth/auth';
 
 const displayWidth = Dimensions.get('window').width;
@@ -24,12 +25,6 @@ const displayHeight = Dimensions.get('window').height;
 const backButtonIcon = require('../resources/back_button_icon_black.png');
 
 const styles = EStyleSheet.create({
-  pageContainer: {
-    width: displayWidth,
-    height: (Platform.OS === 'ios') ? displayHeight : displayHeight - 20,
-    alignItems: 'center',
-    justifyContent: 'center',
-  }, 
   textInput: {
     width: displayWidth - 50,
     height: 40,
@@ -52,15 +47,6 @@ const styles = EStyleSheet.create({
     fontSize: 15,
     color: colors.whiteColor,
   },
-  backButton: {
-    width: 50,
-    height: 50,
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'absolute',
-    top: (Platform.OS === 'ios') ? 20 : 0,
-    left: 0, 
-  }
 });
 
 EStyleSheet.build();
@@ -123,9 +109,9 @@ class SignUp extends Component {
     return (
       <KeyboardAvoidingView style={{ flex: 1, }}>
         <Spinner visible={this.state.visible} overlayColor={'transparent'} color={colors.grayColor} />
-        <View style={styles.pageContainer}>
+        <View style={baseStyles.pageContainer}>
           <TouchableOpacity
-            style={styles.backButton}
+            style={baseStyles.backButton}
             onPress={() => this.backButtonPress()}
           > 
             <Image 

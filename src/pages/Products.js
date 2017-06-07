@@ -16,6 +16,7 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { Actions } from 'react-native-router-flux';
 import colors from '../constants/colors';
+import baseStyles from '../constants/baseStyles';
 import { ASYNCSTORAGE_TOKEN_KEY } from '../constants/config';
 import Header from '../components/Header';
 import ProductRow from '../components/ProductRow';
@@ -27,12 +28,6 @@ const displayWidth = Dimensions.get('window').width;
 const displayHeight = Dimensions.get('window').height;
 
 const styles = EStyleSheet.create({
-  pageContainer: {
-    width: displayWidth,
-    height: (Platform.OS === 'ios') ? displayHeight : displayHeight - 20,
-    alignItems: 'center',
-    justifyContent: 'center',
-  }, 
   listView: {
     width: displayWidth,
     height: (Platform.OS === 'ios') ? displayHeight - 70 : displayHeight - 90,
@@ -98,7 +93,7 @@ class Products extends Component {
   render() {
    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});   
     return (
-      <View style={styles.pageContainer}>
+      <View style={baseStyles.pageContainer}>
         <Spinner visible={this.state.visible} overlayColor={'transparent'} color={colors.grayColor} />
         <Header 
           leftAction={this.backButtonPress}

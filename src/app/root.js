@@ -32,12 +32,12 @@ class Root extends React.Component {
   componentDidMount() {
     NetInfo.addEventListener(
       'change',
-      this.handleConnectivityChange,
+      this.handleFirstConnectivityChange,
     );
     this.loadUserToken()
   }
 
-  handleConnectivityChange = (reach) => {
+  handleFirstConnectivityChange = (reach) => {
     const isConnected = (reach.toLowerCase() !== 'none' && reach.toLowerCase() !== 'unknown');
     this.props.dispatch(networkActions.setNetworkIsConnected(isConnected));
   };
@@ -45,7 +45,7 @@ class Root extends React.Component {
   componentWillUnmount() {
     NetInfo.removeEventListener(
       'change',
-      this.handleConnectivityChange,
+      this.handleFirstConnectivityChange,
     );
   }
 

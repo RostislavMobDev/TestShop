@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import colors from '../constants/colors';
+import baseStyles from '../constants/baseStyles';
 
 const displayWidth = Dimensions.get('window').width;
 const displayHeight = Dimensions.get('window').height;
@@ -20,13 +21,6 @@ const starInactive = require('../resources/star_inactive.png');
 const starActive = require('../resources/star_active.png');
 
 const styles = EStyleSheet.create({
-  pageContainer: {
-    width: displayWidth,
-    height: (Platform.OS === 'ios') ? displayHeight : displayHeight - 20,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)'
-  }, 
   form: {
     width: displayWidth - 80,
     height: 250,
@@ -111,7 +105,7 @@ export default class Products extends Component {
         style={{ flex: 1 }}
         onPress={() => this.hideKeyboard()}
       >
-        <View style={styles.pageContainer}>
+        <View style={baseStyles.pageContainer}>
           <View style={styles.form}>
             <TextInput
               autoCorrect={false}
